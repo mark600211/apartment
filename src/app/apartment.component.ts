@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IApartment, IAttributes } from './IApartment';
 import { ApartmentService } from './apartment.service';
 import { Address } from './address.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-apartment',
@@ -11,6 +12,10 @@ import { Address } from './address.model';
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(13em, 1fr));
         grid-gap: 1rem;
+      }
+
+      .material-icons:hover {
+        cursor: pointer;
       }
     `,
   ],
@@ -34,6 +39,13 @@ import { Address } from './address.model';
           <p>{{ person }}: {{ name }}</p>
         </div>
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="click()">
+          <span class="material-icons">
+            thumb_up
+          </span>
+        </button>
+      </mat-card-actions>
     </mat-card>
   `,
 })
@@ -44,8 +56,12 @@ export class ApartmentComponent implements OnInit {
   name: string;
   person: string;
   premises: string;
+  isLiked: boolean = false;
 
-  constructor(private readonly _as: ApartmentService) {}
+  constructor(
+    private readonly _as: ApartmentService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.attributes = this.apartment.attributes;
@@ -65,5 +81,17 @@ export class ApartmentComponent implements OnInit {
     middle_name: string;
   }): Promise<string> {
     return `${options.first_name} ${options.middle_name} ${options.last_name}`;
+  }
+
+  click() {
+    this.isLiked = !this.isLiked;
+
+    this._snackBar.open(
+      `Вам ${this.isLiked ? 'понравилась' : 'разонравилась'} ${
+        this.attributes.title
+      }`,
+      null,
+      { duration: 2000 }
+    );
   }
 }
