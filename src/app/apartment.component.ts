@@ -40,10 +40,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button (click)="click()">
-          <span class="material-icons">
-            thumb_up
-          </span>
+        <button
+          mat-mini-fab
+          color="primary"
+          aria-label="Example icon button with a plus one icon"
+          (click)="click()"
+        >
+          <mat-icon>thumb_up</mat-icon>
         </button>
       </mat-card-actions>
     </mat-card>
